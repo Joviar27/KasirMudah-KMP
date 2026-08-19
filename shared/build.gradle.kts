@@ -43,6 +43,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
+            implementation(libs.androidx.core.ktx.v1120)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
