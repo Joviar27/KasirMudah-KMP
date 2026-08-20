@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
+import com.cobasendiri.kasirmudahkmp.features.tab.MainComponent
 
 class RootComponent(
     componentContext: ComponentContext
@@ -22,11 +23,11 @@ class RootComponent(
 
     private fun createChild(config: RootConfig, context: ComponentContext): Child {
         return when (config) {
-            is RootConfig.MainTabScreen -> Child.MainTabChild()
+            is RootConfig.MainTabScreen -> Child.MainTabChild(MainComponent(context))
         }
     }
 
     sealed interface Child{
-        class MainTabChild(): Child
+        class MainTabChild(val component: MainComponent): Child
     }
 }
