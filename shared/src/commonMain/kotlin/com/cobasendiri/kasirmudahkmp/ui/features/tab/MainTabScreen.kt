@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.pages.ChildPages
 import com.arkivanov.decompose.extensions.compose.pages.PagesScrollAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.HistoryTabScreen
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.TransactionHistoryTabScreen
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.profile.ProfileTabScreen
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.ShopTabScreen
 import com.cobasendiri.kasirmudahkmp.ui.view.navbar.FloatingNavItem
@@ -59,7 +59,7 @@ fun MainTabScreen(
         ){ _, child ->
             when(child){
                 is MainComponent.TabChild.ShopChild -> ShopTabScreen(innerPadding, child.component)
-                is MainComponent.TabChild.HistoryChild -> HistoryTabScreen()
+                is MainComponent.TabChild.TransactionHistoryChild -> TransactionHistoryTabScreen(innerPadding, child.component)
                 is MainComponent.TabChild.ProfileChild -> ProfileTabScreen()
             }
         }

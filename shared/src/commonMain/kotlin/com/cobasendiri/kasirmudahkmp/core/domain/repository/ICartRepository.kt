@@ -1,6 +1,7 @@
 package com.cobasendiri.kasirmudahkmp.core.domain.repository
 
 import com.cobasendiri.kasirmudahkmp.core.domain.model.ProductInfo
+import com.cobasendiri.kasirmudahkmp.core.domain.model.TransactionItemInfo
 import kotlinx.coroutines.flow.Flow
 
 interface ICartRepository {
@@ -14,4 +15,6 @@ interface ICartRepository {
     suspend fun decrementProduct(productId: String)
 
     suspend fun clearCart()
+
+    suspend fun getProductsTotal(): List<TransactionItemInfo>
 }

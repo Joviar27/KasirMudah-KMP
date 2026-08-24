@@ -1,6 +1,8 @@
 package com.cobasendiri.kasirmudahkmp.ui.features.tab.di
 
 import com.arkivanov.decompose.ComponentContext
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.DefaultTransactionHistoryTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.TransactionHistoryTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.DefaultShopTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.ShopTabComponent
 import org.koin.dsl.module
@@ -20,6 +22,18 @@ val tabModule = module {
             clearCartUseCase = get(),
             deleteProductUseCase = get(),
             onNavigateToReceiptDraft = onNavigateToReceiptDraft,
+        )
+    }
+
+    factory<TransactionHistoryTabComponent> { (ctx: ComponentContext, onNavigateToDetail: (String) -> Unit) ->
+        DefaultTransactionHistoryTabComponent(
+            componentContext = ctx,
+            getTransactionHistoryUseCase = get(),
+            getBookmarkedTransactionUseCase = get(),
+            updateTransactionBookmarkUseCase = get(),
+            deleteTransactionHistoryUseCase = get(),
+            updateTransactionNameUseCase = get(),
+            onNavigateToDetail = onNavigateToDetail
         )
     }
 }

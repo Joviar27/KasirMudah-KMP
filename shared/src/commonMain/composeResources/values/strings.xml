@@ -30,6 +30,29 @@
     <string name="delete_transaction_title">Hapus Pembelian?</string>
     <string name="delete_transaction_body">Pembelian akan dihapus secara permanen dan tidak bisa dikembalikan</string>
 
+    <!--  Transaction History Screen  -->
+    <string name="history">Riwayat Pembelian</string>
+    <string name="bookmarked">Ditandai</string>
+    <string name="today">Hari Ini</string>
+    <string name="last_week">1 Minggu Terakhir</string>
+    <string name="last_month">1 Bulan Terakhir</string>
+    <string name="history_empty_title">Belum ada pembelian pada periode ini</string>
+    <string name="history_empty_subtitle">Mulai simpan pembelian sekarang!</string>
+    <string name="bookmark_empty_title">Belum ada pembelian yang tandai</string>
+    <string name="bookmark_empty_subtitle">Mulai tandai pembelian sekarang!</string>
+
+    <!-- Edit Transaction Dialog -->
+    <string name="edit_transaction">Edit Nama Pembelian</string>
+    <string name="transaction_name">Nama Pembelian</string>
+
+    <!--  Receipt Page  -->
+    <string name="receipt_title">Nota Pembelian</string>
+    <string name="transaction_id">Nomor Pembelian:\n%1$s</string>
+    <string name="price">Harga</string>
+    <string name="name_count">%1$s (%2$sX)</string>
+    <string name="total">Total</string>
+    <string name="download_receipt">Unduh Nota Pembelian</string>
+
     <!--  Error message  -->
     <string name="error_general">Terjadi kesalahan sistem</string>
     <string name="error_database">Gagal melakukan perubahan data</string>
@@ -41,4 +64,9 @@
     <string name="succcess_add">Produk berhasil ditambahkan</string>
     <string name="success_update">Produk berhasil diperbaharui</string>
     <string name="success_delete">Produk berhasil dihapus</string>
+    <string name="success_delete_transaction">Transaksi berhasil dihapus</string>
+    <string name="success_new_bookmark">Transaksi berhasil ditandai</string>
+    <string name="success_remove_bookmark">Tanda transaksi berhasil dihapus</string>
+    <string name="success_update_transaction_name">Transaksi berhasil diperbaharui</string>
+    <string name="success_save_receipt">Nota pembelian diunduh ke galeri</string>
 </resources>

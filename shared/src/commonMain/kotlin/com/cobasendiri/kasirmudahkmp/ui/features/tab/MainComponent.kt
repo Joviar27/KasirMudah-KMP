@@ -7,6 +7,7 @@ import com.arkivanov.decompose.router.pages.PagesNavigation
 import com.arkivanov.decompose.router.pages.childPages
 import com.arkivanov.decompose.router.pages.select
 import com.arkivanov.decompose.value.Value
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.TransactionHistoryTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.ShopTabComponent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -14,7 +15,8 @@ import org.koin.core.parameter.parametersOf
 
 class MainComponent(
     componentContext: ComponentContext,
-    val onNavigateToReceiptDraft: () -> Unit
+    val onNavigateToReceiptDraft: () -> Unit,
+    val onNavigateToTransactionDetail: (String) -> Unit
 ): ComponentContext by componentContext, KoinComponent {
 
     private val tabNavigation = PagesNavigation<MainTabConfig>()
@@ -38,7 +40,11 @@ class MainComponent(
                     parametersOf(context, onNavigateToReceiptDraft)
                 }
             )
-            MainTabConfig.History -> TabChild.HistoryChild()
+            MainTabConfig.History -> TabChild.TransactionHistoryChild(
+                component = get<TransactionHistoryTabComponent> {
+                    parametersOf(context, onNavigateToTransactionDetail)
+                }
+            )
             MainTabConfig.Profile -> TabChild.ProfileChild()
         }
     }
@@ -49,7 +55,7 @@ class MainComponent(
 
     sealed interface TabChild{
         class ShopChild(val component: ShopTabComponent): TabChild
-        class HistoryChild(): TabChild
+        class TransactionHistoryChild(val component: TransactionHistoryTabComponent): TabChild
         class ProfileChild(): TabChild
     }
 }

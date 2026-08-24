@@ -7,6 +7,7 @@ import androidx.room3.Query
 import androidx.room3.Transaction
 import com.cobasendiri.kasirmudahkmp.core.data.room.entity.CartEntity
 import com.cobasendiri.kasirmudahkmp.core.data.room.result.ProductResult
+import com.cobasendiri.kasirmudahkmp.core.data.room.result.TransactionItemResult
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -54,4 +55,11 @@ interface CartDao {
 
     @Query("DELETE FROM carts")
     suspend fun deleteAllCart()
+
+    @Query("""
+        SELECT p.name, c.count, (p.price * c.count) AS total
+        FROM products as p
+        INNER JOIN carts as c ON p.id = c.product_id
+    """)
+    suspend fun getProductsTotalAmount(): List<TransactionItemResult>
 }
