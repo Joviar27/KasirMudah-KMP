@@ -2,6 +2,8 @@ package com.cobasendiri.kasirmudahkmp.core.data.room
 
 import androidx.room3.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.cobasendiri.kasirmudahkmp.core.data.room.db.DatabaseBuilder
+import com.cobasendiri.kasirmudahkmp.core.data.room.db.ShopDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager

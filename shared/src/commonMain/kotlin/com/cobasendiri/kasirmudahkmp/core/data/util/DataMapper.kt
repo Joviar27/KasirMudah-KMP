@@ -1,7 +1,7 @@
 package com.cobasendiri.kasirmudahkmp.core.data.util
 
-import com.cobasendiri.kasirmudahkmp.core.data.entity.ProductEntity
-import com.cobasendiri.kasirmudahkmp.core.data.result.ProductResult
+import com.cobasendiri.kasirmudahkmp.core.data.room.entity.ProductEntity
+import com.cobasendiri.kasirmudahkmp.core.data.room.result.ProductResult
 import com.cobasendiri.kasirmudahkmp.core.domain.model.Product
 import com.cobasendiri.kasirmudahkmp.core.domain.model.ProductDraft
 import com.cobasendiri.kasirmudahkmp.core.domain.model.ProductInfo

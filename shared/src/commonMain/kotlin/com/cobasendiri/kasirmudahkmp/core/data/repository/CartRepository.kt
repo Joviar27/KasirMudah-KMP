@@ -3,7 +3,7 @@ package com.cobasendiri.kasirmudahkmp.core.data.repository
 import com.cobasendiri.kasirmudahkmp.core.data.util.CoroutineMapper.mapExceptionFlow
 import com.cobasendiri.kasirmudahkmp.core.data.util.CoroutineMapper.runMapExceptionSuspending
 import com.cobasendiri.kasirmudahkmp.core.data.util.DataMapper.mapListToDomain
-import com.cobasendiri.kasirmudahkmp.core.data.room.CartDao
+import com.cobasendiri.kasirmudahkmp.core.data.room.dao.CartDao
 import com.cobasendiri.kasirmudahkmp.core.domain.model.ProductInfo
 import com.cobasendiri.kasirmudahkmp.core.domain.repository.ICartRepository
 import kotlinx.coroutines.CoroutineDispatcher

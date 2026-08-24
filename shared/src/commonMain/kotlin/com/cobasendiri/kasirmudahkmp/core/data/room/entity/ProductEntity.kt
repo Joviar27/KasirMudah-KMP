@@ -1,4 +1,4 @@
-package com.cobasendiri.kasirmudahkmp.core.data.entity
+package com.cobasendiri.kasirmudahkmp.core.data.room.entity
 
 import androidx.room3.ColumnInfo
 import androidx.room3.Entity

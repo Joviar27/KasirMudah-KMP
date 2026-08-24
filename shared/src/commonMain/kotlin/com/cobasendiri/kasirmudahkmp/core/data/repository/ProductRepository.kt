@@ -4,7 +4,7 @@ import com.cobasendiri.kasirmudahkmp.core.data.util.CoroutineMapper.mapException
 import com.cobasendiri.kasirmudahkmp.core.data.util.CoroutineMapper.runMapExceptionSuspending
 import com.cobasendiri.kasirmudahkmp.core.data.util.DataMapper.mapListToDomain
 import com.cobasendiri.kasirmudahkmp.core.data.util.DataMapper.mapToEntity
-import com.cobasendiri.kasirmudahkmp.core.data.room.ProductDao
+import com.cobasendiri.kasirmudahkmp.core.data.room.dao.ProductDao
 import com.cobasendiri.kasirmudahkmp.core.data.util.IdGenerator
 import com.cobasendiri.kasirmudahkmp.core.domain.model.ProductDraft
 import com.cobasendiri.kasirmudahkmp.core.domain.model.ProductInfo

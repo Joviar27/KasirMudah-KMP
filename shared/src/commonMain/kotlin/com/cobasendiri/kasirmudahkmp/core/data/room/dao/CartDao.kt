@@ -1,12 +1,12 @@
-package com.cobasendiri.kasirmudahkmp.core.data.room
+package com.cobasendiri.kasirmudahkmp.core.data.room.dao
 
 import androidx.room3.Dao
 import androidx.room3.Insert
 import androidx.room3.OnConflictStrategy
 import androidx.room3.Query
 import androidx.room3.Transaction
-import com.cobasendiri.kasirmudahkmp.core.data.entity.CartEntity
-import com.cobasendiri.kasirmudahkmp.core.data.result.ProductResult
+import com.cobasendiri.kasirmudahkmp.core.data.room.entity.CartEntity
+import com.cobasendiri.kasirmudahkmp.core.data.room.result.ProductResult
 import kotlinx.coroutines.flow.Flow
 
 @Dao

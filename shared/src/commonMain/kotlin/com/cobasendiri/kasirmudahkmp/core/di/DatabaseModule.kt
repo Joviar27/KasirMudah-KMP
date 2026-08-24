@@ -1,9 +1,9 @@
 package com.cobasendiri.kasirmudahkmp.core.di
 
-import com.cobasendiri.kasirmudahkmp.core.data.room.ProductDao
-import com.cobasendiri.kasirmudahkmp.core.data.room.CartDao
-import com.cobasendiri.kasirmudahkmp.core.data.room.DatabaseBuilder
-import com.cobasendiri.kasirmudahkmp.core.data.room.ShopDatabase
+import com.cobasendiri.kasirmudahkmp.core.data.room.dao.ProductDao
+import com.cobasendiri.kasirmudahkmp.core.data.room.dao.CartDao
+import com.cobasendiri.kasirmudahkmp.core.data.room.db.DatabaseBuilder
+import com.cobasendiri.kasirmudahkmp.core.data.room.db.ShopDatabase
 import org.koin.dsl.module
 
 val databaseModule = module {

@@ -1,11 +1,13 @@
-package com.cobasendiri.kasirmudahkmp.core.data.room
+package com.cobasendiri.kasirmudahkmp.core.data.room.db
 
 import androidx.room3.ConstructedBy
 import androidx.room3.Database
 import androidx.room3.RoomDatabase
 import androidx.room3.RoomDatabaseConstructor
-import com.cobasendiri.kasirmudahkmp.core.data.entity.ProductEntity
-import com.cobasendiri.kasirmudahkmp.core.data.entity.CartEntity
+import com.cobasendiri.kasirmudahkmp.core.data.room.entity.ProductEntity
+import com.cobasendiri.kasirmudahkmp.core.data.room.entity.CartEntity
+import com.cobasendiri.kasirmudahkmp.core.data.room.dao.CartDao
+import com.cobasendiri.kasirmudahkmp.core.data.room.dao.ProductDao
 
 @Database(
     entities = [
