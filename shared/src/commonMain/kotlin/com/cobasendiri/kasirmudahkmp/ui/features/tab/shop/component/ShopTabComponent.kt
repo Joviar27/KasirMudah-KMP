@@ -14,6 +14,8 @@ interface ShopTabComponent: BaseComponentInterface {
 
     fun updateQuery(newQuery: String)
     fun updateFilter(newFilter: ShopFilter)
+    fun loadProductList()
+    fun getTotalCartAmount()
     fun getShopProfile()
     fun incrementProduct(productId: String)
     fun decrementProduct(productId: String)
@@ -28,6 +30,8 @@ interface ShopTabComponent: BaseComponentInterface {
     fun showConfirmDeleteDialog(productId: String)
     fun dismissConfirmDeleteDialog()
     fun onNavigateToReceiptDraft()
+    fun showUnavailableDialog()
+    fun dismissUnavailableDialog()
 
     data class ShopTabState(
         val shopName: String = "",
@@ -41,6 +45,7 @@ interface ShopTabComponent: BaseComponentInterface {
         val showEditProductDialog: Product? = null,
         val showAddProductDialog: Boolean = false,
         val showConfirmDeleteDialog: String? = null,
+        val showUnavailableDialog: Boolean = false,
         val showEmptyListView: Boolean = false
     )
 }

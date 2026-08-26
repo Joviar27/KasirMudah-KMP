@@ -56,6 +56,7 @@ import com.cobasendiri.kasirmudahkmp.theme.Surface
 import com.cobasendiri.kasirmudahkmp.theme.Tertiary
 import com.cobasendiri.kasirmudahkmp.theme.TertiaryVariant
 import com.cobasendiri.kasirmudahkmp.theme.White
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.profile.ProfileEvent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.ShopTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.view.FloatingAction
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.view.ProductItem
@@ -63,6 +64,7 @@ import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.view.TotalItem
 import com.cobasendiri.kasirmudahkmp.ui.utils.dateFormat
 import com.cobasendiri.kasirmudahkmp.ui.view.FilterChip
 import com.cobasendiri.kasirmudahkmp.ui.view.alertbar.UiMessageBar
+import com.cobasendiri.kasirmudahkmp.ui.view.dialog.InformationConfirmDialog
 import com.cobasendiri.kasirmudahkmp.ui.view.dialog.NegativeConfirmDialog
 import com.cobasendiri.kasirmudahkmp.ui.view.dialog.ProductDetailDialog
 import kasirmudah_kmp.shared.generated.resources.Res
@@ -71,6 +73,7 @@ import kasirmudah_kmp.shared.generated.resources.cancel
 import kasirmudah_kmp.shared.generated.resources.cart
 import kasirmudah_kmp.shared.generated.resources.cart_empty_subtitle
 import kasirmudah_kmp.shared.generated.resources.cart_empty_title
+import kasirmudah_kmp.shared.generated.resources.close
 import kasirmudah_kmp.shared.generated.resources.delete
 import kasirmudah_kmp.shared.generated.resources.delete_shop_body
 import kasirmudah_kmp.shared.generated.resources.delete_shop_title
@@ -81,6 +84,8 @@ import kasirmudah_kmp.shared.generated.resources.menu_setting
 import kasirmudah_kmp.shared.generated.resources.products_empty_subtitle
 import kasirmudah_kmp.shared.generated.resources.products_empty_title
 import kasirmudah_kmp.shared.generated.resources.search
+import kasirmudah_kmp.shared.generated.resources.unavailable_body
+import kasirmudah_kmp.shared.generated.resources.unavailable_title
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -153,6 +158,12 @@ fun ShopTabScreen(
             is ShopEvent.OnDeleteProduct -> {
                 component.deleteProduct(event.productId)
             }
+            is ShopEvent.OnShowUnavailableDialog ->{
+                component.showUnavailableDialog()
+            }
+            is ShopEvent.OnDismissUnavailableDialog ->{
+                component.dismissUnavailableDialog()
+            }
         }
     }
 }
@@ -224,7 +235,11 @@ fun ShopContent(
                         alignment = Alignment.CenterStart
                     )
                     Row(Modifier
-                        .background(OnPrimary, RoundedCornerShape(16.dp))
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(OnPrimary)
+                        .clickable{
+                            event.invoke(ShopEvent.OnShowUnavailableDialog)
+                        }
                         .padding(vertical = 5.dp, horizontal = 10.dp)
                     ) {
                         Text(
@@ -465,6 +480,17 @@ fun ShopContent(
                 }
             )
         }
+        if(state.showUnavailableDialog){
+            val dismissUnavailableDialog = ShopEvent.OnDismissUnavailableDialog
+            InformationConfirmDialog(
+                title = stringResource(Res.string.unavailable_title),
+                body = stringResource(Res.string.unavailable_body),
+                confirmButton = stringResource(Res.string.close),
+                onDismiss = { event.invoke(dismissUnavailableDialog) },
+                onConfirm = { event.invoke(dismissUnavailableDialog) }
+            )
+        }
+
         AlertBarAnimatedVisibility(state.uiMessage != null) {
             state.uiMessage?.let {
                 UiMessageBar(it)

@@ -20,7 +20,7 @@ interface ShopEvent {
     ): ShopEvent
 
     data class OnFilterChange(
-        val newFilter: com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.ShopFilter
+        val newFilter: ShopFilter
     ): ShopEvent
 
     data object OnShowAddProductDialog: ShopEvent
@@ -48,4 +48,8 @@ interface ShopEvent {
     data class OnDeleteProduct(
         val productId: String
     ): ShopEvent
+
+    data object OnShowUnavailableDialog: ShopEvent
+
+    data object OnDismissUnavailableDialog: ShopEvent
 }

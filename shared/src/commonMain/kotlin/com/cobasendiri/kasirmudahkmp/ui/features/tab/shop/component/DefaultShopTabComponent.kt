@@ -36,10 +36,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.collections.copy
-import kotlin.invoke
 import kotlin.time.Clock
 
 class DefaultShopTabComponent(
@@ -88,7 +85,7 @@ class DefaultShopTabComponent(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun loadProductList(){
+    override fun loadProductList(){
         scope.launch {
             _state.toStateFlow(lifecycle).map { Pair(it.searchQuery, it.filter) }
                 .flatMapLatest { condition ->
@@ -108,7 +105,7 @@ class DefaultShopTabComponent(
         }
     }
 
-    private fun getTotalCartAmount(){
+    override fun getTotalCartAmount(){
         scope.launch {
             getTotalCartAmountUseCase.invoke().collect { result ->
                 result.handleResult { totalAmount ->
@@ -214,6 +211,18 @@ class DefaultShopTabComponent(
 
     override fun dismissConfirmDeleteDialog(){
         _state.update { it.copy(showConfirmDeleteDialog = null) }
+    }
+
+    override fun showUnavailableDialog(){
+        _state.update {
+            it.copy(showUnavailableDialog = true)
+        }
+    }
+
+    override fun dismissUnavailableDialog(){
+        _state.update {
+            it.copy(showUnavailableDialog = false)
+        }
     }
 
     override fun showUiMessage(message: UiMessage) {
