@@ -53,6 +53,22 @@
     <string name="total">Total</string>
     <string name="download_receipt">Unduh Nota Pembelian</string>
 
+    <!--  Profile Screen  -->
+    <string name="menu_edit_profile">Edit Profil Toko</string>
+    <string name="menu_about_us">Tentang Kami</string>
+    <string name="menu_sync_data">Sinkronisasi Data</string>
+
+    <!--  Edit Profile Dialog  -->
+    <string name="edit_shop_profile">Edit Profil Toko</string>
+    <string name="shop_name">Nama toko</string>
+
+    <string name="default_shop_name">Nama Tokomu</string>
+
+    <!-- Unavailable dialog   -->
+    <string name="close">Tutup</string>
+    <string name="unavailable_title">Belum Tersedia</string>
+    <string name="unavailable_body">Fitur ini belum tersedia pada versi ini, pantau terus versi terbaru aplikasi nya!</string>
+
     <!--  Error message  -->
     <string name="error_general">Terjadi kesalahan sistem</string>
     <string name="error_database">Gagal melakukan perubahan data</string>
@@ -69,4 +85,5 @@
     <string name="success_remove_bookmark">Tanda transaksi berhasil dihapus</string>
     <string name="success_update_transaction_name">Transaksi berhasil diperbaharui</string>
     <string name="success_save_receipt">Nota pembelian diunduh ke galeri</string>
+    <string name="success_update_shop_profile">Profil toko berhasil diperbaharui</string>
 </resources>

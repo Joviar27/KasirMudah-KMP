@@ -8,6 +8,7 @@ import com.arkivanov.decompose.router.pages.childPages
 import com.arkivanov.decompose.router.pages.select
 import com.arkivanov.decompose.value.Value
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.TransactionHistoryTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.profile.component.ProfileTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.ShopTabComponent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -45,7 +46,11 @@ class MainComponent(
                     parametersOf(context, onNavigateToTransactionDetail)
                 }
             )
-            MainTabConfig.Profile -> TabChild.ProfileChild()
+            MainTabConfig.Profile -> TabChild.ProfileChild(
+                component = get<ProfileTabComponent> {
+                    parametersOf(context)
+                }
+            )
         }
     }
 
@@ -56,6 +61,6 @@ class MainComponent(
     sealed interface TabChild{
         class ShopChild(val component: ShopTabComponent): TabChild
         class TransactionHistoryChild(val component: TransactionHistoryTabComponent): TabChild
-        class ProfileChild(): TabChild
+        class ProfileChild(val component: ProfileTabComponent): TabChild
     }
 }

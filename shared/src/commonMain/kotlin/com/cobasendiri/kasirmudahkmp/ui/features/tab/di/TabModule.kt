@@ -3,6 +3,8 @@ package com.cobasendiri.kasirmudahkmp.ui.features.tab.di
 import com.arkivanov.decompose.ComponentContext
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.DefaultTransactionHistoryTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.TransactionHistoryTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.profile.component.DefaultProfileTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.profile.component.ProfileTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.DefaultShopTabComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.ShopTabComponent
 import org.koin.dsl.module
@@ -21,7 +23,8 @@ val tabModule = module {
             decrementProductUseCase = get(),
             clearCartUseCase = get(),
             deleteProductUseCase = get(),
-            onNavigateToReceiptDraft = onNavigateToReceiptDraft,
+            getShopProfileUseCase = get(),
+            onNavigateToReceiptDraft = onNavigateToReceiptDraft
         )
     }
 
@@ -34,6 +37,14 @@ val tabModule = module {
             deleteTransactionHistoryUseCase = get(),
             updateTransactionNameUseCase = get(),
             onNavigateToDetail = onNavigateToDetail
+        )
+    }
+
+    factory<ProfileTabComponent> { (ctx: ComponentContext) ->
+        DefaultProfileTabComponent(
+            componentContext = ctx,
+            getShopProfileUseCase = get(),
+            updateShopProfileUseCase = get(),
         )
     }
 }

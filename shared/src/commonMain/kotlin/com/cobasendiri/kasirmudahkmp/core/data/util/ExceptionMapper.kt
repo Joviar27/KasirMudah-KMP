@@ -1,6 +1,5 @@
 package com.cobasendiri.kasirmudahkmp.core.data.util
 
-import android.database.sqlite.SQLiteDiskIOException
 import androidx.sqlite.SQLiteException
 import com.cobasendiri.kasirmudahkmp.core.domain.exception.KasirMudahException
 

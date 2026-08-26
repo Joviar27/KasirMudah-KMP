@@ -74,6 +74,16 @@ kotlin {
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
 
+            //Datastore
+            implementation(libs.androidx.datastore.preferences)
+
+            //Coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+
+            //Image Picker
+            implementation(libs.onseok.peekaboo.image.picker)
+
             //Koin
             api(libs.koin.core)
 

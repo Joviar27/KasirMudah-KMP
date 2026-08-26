@@ -3,12 +3,14 @@ package com.cobasendiri.kasirmudahkmp.core.domain.usecase
 import com.cobasendiri.kasirmudahkmp.core.domain.Result
 import com.cobasendiri.kasirmudahkmp.core.domain.exception.KasirMudahException
 import com.cobasendiri.kasirmudahkmp.core.domain.repository.ICartRepository
+import com.cobasendiri.kasirmudahkmp.core.domain.repository.IProfileRepository
 import com.cobasendiri.kasirmudahkmp.core.domain.repository.ITransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
 
 class AddTransactionUseCase(
     private val transactionRepository: ITransactionRepository,
     private val cartRepository: ICartRepository,
+    private val profileRepository: IProfileRepository
 ) {
 
     suspend fun invoke(): Result<Unit>{
@@ -25,11 +27,12 @@ class AddTransactionUseCase(
                 throw KasirMudahException.TransactionAmountInvalidError
             }
 
-            //TODO: Update Shop Name
+            val shopName = profileRepository.getShopProfile().firstOrNull()?.shopName ?: ""
+
             val result = transactionRepository.insertNewTransaction(
                 transactionItems,
                 transactionTotal,
-                "tes shop name"
+                shopName
             )
             Result.Success(result)
         }catch (e: KasirMudahException){

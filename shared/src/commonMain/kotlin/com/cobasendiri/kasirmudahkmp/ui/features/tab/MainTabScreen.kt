@@ -60,7 +60,7 @@ fun MainTabScreen(
             when(child){
                 is MainComponent.TabChild.ShopChild -> ShopTabScreen(innerPadding, child.component)
                 is MainComponent.TabChild.TransactionHistoryChild -> TransactionHistoryTabScreen(innerPadding, child.component)
-                is MainComponent.TabChild.ProfileChild -> ProfileTabScreen()
+                is MainComponent.TabChild.ProfileChild -> ProfileTabScreen(innerPadding, child.component)
             }
         }
     }

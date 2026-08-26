@@ -14,6 +14,7 @@ interface ShopTabComponent: BaseComponentInterface {
 
     fun updateQuery(newQuery: String)
     fun updateFilter(newFilter: ShopFilter)
+    fun getShopProfile()
     fun incrementProduct(productId: String)
     fun decrementProduct(productId: String)
     fun clearCart()

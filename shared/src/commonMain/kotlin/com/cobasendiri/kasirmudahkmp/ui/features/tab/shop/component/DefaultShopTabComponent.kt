@@ -14,6 +14,7 @@ import com.cobasendiri.kasirmudahkmp.core.domain.usecase.DecrementProductUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.DeleteProductUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetCartListUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetProductLisUseCase
+import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetShopProfileUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetTotalCartAmountUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.IncrementProductUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.UpdateProductColorCodeUseCase
@@ -35,7 +36,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.collections.copy
+import kotlin.invoke
+import kotlin.time.Clock
 
 class DefaultShopTabComponent(
     componentContext: ComponentContext,
@@ -49,6 +54,7 @@ class DefaultShopTabComponent(
     private val decrementProductUseCase: DecrementProductUseCase,
     private val clearCartUseCase: ClearCartUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
+    private val getShopProfileUseCase: GetShopProfileUseCase,
     private val onNavigateToReceiptDraft: () -> Unit
 ): BaseComponent(), ShopTabComponent, ComponentContext by componentContext {
 
@@ -61,6 +67,7 @@ class DefaultShopTabComponent(
     init {
         loadProductList()
         getTotalCartAmount()
+        getShopProfile()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -109,6 +116,21 @@ class DefaultShopTabComponent(
                         totalAmount = totalAmount ?: 0L,
                         isFloatingActionVisible = totalAmount != null && totalAmount > 0L
                     ) }
+                }
+            }
+        }
+    }
+
+    override fun getShopProfile(){
+        scope.launch {
+            getShopProfileUseCase.invoke().collect { result ->
+                result.handleResult{ shopProfile ->
+                    _state.update {
+                        it.copy(
+                            shopName = shopProfile.shopName,
+                            date = Clock.System.now().toEpochMilliseconds()/1000
+                        )
+                    }
                 }
             }
         }
