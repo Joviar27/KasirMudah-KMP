@@ -26,7 +26,8 @@ class DefaultReceiptDraftComponent(
     private val getTotalCartAmountUseCase: GetTotalCartAmountUseCase,
     private val addTransactionUseCase: AddTransactionUseCase,
     private val clearCartUseCase: ClearCartUseCase,
-    private val onNavigateBack: () -> Unit
+    private val onNavigateBack: () -> Unit,
+    private val onNavigateToHistory: () -> Unit
 ): BaseComponent(), ReceiptDraftComponent, ComponentContext by componentContext {
 
     private val retained = instanceKeeper.getOrCreate { RetainedScope() }
@@ -59,7 +60,7 @@ class DefaultReceiptDraftComponent(
     override fun saveNewTransaction(){
         scope.launch {
             addTransactionUseCase.invoke().handleResult{
-                onNavigateBack()
+                onNavigateToHistory()
                 clearCart()
             }
         }
@@ -81,6 +82,10 @@ class DefaultReceiptDraftComponent(
 
     override fun onNavigateBack() {
         onNavigateBack.invoke()
+    }
+
+    fun onNavigateToHistory(){
+        onNavigateToHistory.invoke()
     }
 
     private class RetainedScope : InstanceKeeper.Instance {

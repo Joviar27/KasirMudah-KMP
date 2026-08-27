@@ -1,19 +1,23 @@
 package com.cobasendiri.kasirmudahkmp.ui.features
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.pages.PagesNavigation
+import com.arkivanov.decompose.router.pages.select
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.cobasendiri.kasirmudahkmp.ui.features.receipt.detail.component.ReceiptDetailComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.receipt.draft.component.ReceiptDraftComponent
 import com.cobasendiri.kasirmudahkmp.ui.features.tab.MainComponent
-import kotlinx.coroutines.CoroutineScope
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.MainTabConfig
 import org.koin.core.component.KoinComponent
-import org.koin.core.parameter.parametersOf
 import org.koin.core.component.get
+import org.koin.core.parameter.parametersOf
 
 class RootComponent(
     componentContext: ComponentContext,
@@ -28,6 +32,15 @@ class RootComponent(
         handleBackButton = true,
         childFactory = ::createChild
     )
+
+    private fun selectMainTab(index: Int) {
+        rootNavigation.replaceAll(RootConfig.MainTabScreen)
+
+        val activeChild = childStack.value.active.instance
+        if (activeChild is Child.MainTabChild) {
+            activeChild.component.selectTab(index)
+        }
+    }
 
     private fun createChild(config: RootConfig, context: ComponentContext): Child {
         return when (config) {
@@ -46,6 +59,8 @@ class RootComponent(
                 component = get<ReceiptDraftComponent> {
                     parametersOf(context, {
                         rootNavigation.pop()
+                    },{
+                        selectMainTab(1)
                     })
                 }
             )

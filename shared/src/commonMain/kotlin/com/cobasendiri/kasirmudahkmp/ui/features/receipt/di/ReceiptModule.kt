@@ -32,7 +32,8 @@ val receiptModule = module {
         )
     }
 
-    factory<ReceiptDraftComponent> { (ctx: ComponentContext, onNavigateBack: () -> Unit) ->
+    factory<ReceiptDraftComponent> {
+        (ctx: ComponentContext, onNavigateBack: () -> Unit, onNavigateToHistory: () -> Unit) ->
 
         DefaultReceiptDraftComponent(
             componentContext = ctx,
@@ -41,7 +42,8 @@ val receiptModule = module {
             getTotalCartAmountUseCase = get(),
             addTransactionUseCase = get(),
             clearCartUseCase = get(),
-            onNavigateBack = onNavigateBack
+            onNavigateBack = onNavigateBack,
+            onNavigateToHistory = onNavigateToHistory
         )
     }
 }
