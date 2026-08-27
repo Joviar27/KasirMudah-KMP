@@ -5,6 +5,13 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
+}
+
+room3{
+    schemaDirectory("$projectDir/schemas")
 }
 
 kotlin {
@@ -43,6 +50,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.uiTooling)
+            implementation(libs.androidx.core.ktx.v1120)
+            api(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -53,6 +62,33 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            //Decompose
+            api(libs.decompose)
+            implementation(libs.decompose.compose)
+
+            //Serialization
+            implementation(libs.kotlinx.serialization.json)
+
+            //Room
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
+
+            //Datastore
+            implementation(libs.androidx.datastore.preferences)
+
+            //Coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+
+            //Image Picker
+            implementation(libs.onseok.peekaboo.image.picker)
+
+            //Koin
+            api(libs.koin.core)
+
+            //Date-Time
+            implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -62,4 +98,7 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
 }

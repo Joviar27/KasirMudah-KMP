@@ -1,0 +1,50 @@
+package com.cobasendiri.kasirmudahkmp.ui.features.tab.di
+
+import com.arkivanov.decompose.ComponentContext
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.DefaultTransactionHistoryTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.history.component.TransactionHistoryTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.profile.component.DefaultProfileTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.profile.component.ProfileTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.DefaultShopTabComponent
+import com.cobasendiri.kasirmudahkmp.ui.features.tab.shop.component.ShopTabComponent
+import org.koin.dsl.module
+
+val tabModule = module {
+    factory<ShopTabComponent> { (ctx: ComponentContext, onNavigateToReceiptDraft: () -> Unit) ->
+        DefaultShopTabComponent(
+            componentContext = ctx,
+            getProductLisUseCase = get(),
+            getCartListUseCase = get(),
+            addProductUseCase = get(),
+            updateProductUseCase = get(),
+            updateProductColorCodeUseCase = get(),
+            getTotalCartAmountUseCase = get(),
+            incrementProductUseCase = get(),
+            decrementProductUseCase = get(),
+            clearCartUseCase = get(),
+            deleteProductUseCase = get(),
+            getShopProfileUseCase = get(),
+            onNavigateToReceiptDraft = onNavigateToReceiptDraft
+        )
+    }
+
+    factory<TransactionHistoryTabComponent> { (ctx: ComponentContext, onNavigateToDetail: (String) -> Unit) ->
+        DefaultTransactionHistoryTabComponent(
+            componentContext = ctx,
+            getTransactionHistoryUseCase = get(),
+            getBookmarkedTransactionUseCase = get(),
+            updateTransactionBookmarkUseCase = get(),
+            deleteTransactionHistoryUseCase = get(),
+            updateTransactionNameUseCase = get(),
+            onNavigateToDetail = onNavigateToDetail
+        )
+    }
+
+    factory<ProfileTabComponent> { (ctx: ComponentContext) ->
+        DefaultProfileTabComponent(
+            componentContext = ctx,
+            getShopProfileUseCase = get(),
+            updateShopProfileUseCase = get(),
+        )
+    }
+}
