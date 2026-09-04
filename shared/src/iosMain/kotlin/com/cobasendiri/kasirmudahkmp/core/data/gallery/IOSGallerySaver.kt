@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asSkiaBitmap
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.cstr
 import kotlinx.cinterop.usePinned
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.jetbrains.skia.EncodedImageFormat
@@ -11,6 +12,7 @@ import org.jetbrains.skia.Image
 import platform.Foundation.NSData
 import platform.Foundation.NSOrderedSet
 import platform.Foundation.NSPredicate
+import platform.Foundation.NSString
 import platform.Foundation.dataWithBytes
 import platform.Foundation.orderedSetWithObject
 import platform.Photos.PHAssetChangeRequest
@@ -24,6 +26,7 @@ import platform.UIKit.UIImage
 import kotlin.coroutines.resume
 
 class IOSGallerySaver: GallerySaver {
+    @OptIn(ExperimentalForeignApi::class)
     override suspend fun saveImageToGallery(
         imageBitmap: ImageBitmap,
         fileName: String
@@ -39,7 +42,7 @@ class IOSGallerySaver: GallerySaver {
         val albumName = "KasirMudah"
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({
             val fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate.predicateWithFormat("title = %@", albumName)
+            fetchOptions.predicate = NSPredicate.predicateWithFormat("title = %@", albumName.cstr)
             val collections = PHAssetCollection.fetchAssetCollectionsWithType(
                 PHAssetCollectionTypeAlbum,
                 PHAssetCollectionSubtypeAny,
