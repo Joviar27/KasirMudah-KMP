@@ -59,13 +59,18 @@ fun ReceiptDetailScreen(
                 is ReceiptDetailEvent.OnDismissConfirmDeleteDialog -> {
                     component.dismissConfirmDeleteDialog()
                 }
-
                 is ReceiptDetailEvent.OnDelete -> {
                     component.deleteTransaction(event.transactionId)
                 }
-
                 is ReceiptDetailEvent.OnDownload -> {
                     component.downloadReceipt(event.receiptBitmap, event.fileName)
+                }
+                is ReceiptDetailEvent.OnDismissGalleryPermissionDialog ->{
+                    component.dismissGalleryPermissionDialog()
+                }
+                is ReceiptDetailEvent.OnOpenAppSetting ->{
+                    component.openAppSetting()
+                    component.dismissGalleryPermissionDialog()
                 }
             }
         }

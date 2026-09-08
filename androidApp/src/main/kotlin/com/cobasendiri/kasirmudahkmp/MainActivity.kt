@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.arkivanov.decompose.defaultComponentContext
 import com.cobasendiri.kasirmudahkmp.ui.features.App
 import com.cobasendiri.kasirmudahkmp.ui.features.RootComponent
@@ -12,6 +13,7 @@ import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 

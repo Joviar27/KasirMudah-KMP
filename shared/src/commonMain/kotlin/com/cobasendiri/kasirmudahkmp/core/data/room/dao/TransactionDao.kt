@@ -37,10 +37,10 @@ interface TransactionDao {
     fun getBookmarkedTransaction(): Flow<List<TransactionHistoryResult>>
 
     @Query("DELETE FROM transactions WHERE id = :transactionId")
-    fun deleteTransaction(transactionId: String)
+    suspend fun deleteTransaction(transactionId: String)
 
     @Query("SELECT *FROM transactions as t WHERE t.id = :transactionId")
-    fun getTransaction(transactionId: String): TransactionEntity
+    suspend fun getTransaction(transactionId: String): TransactionEntity
 
     @Query("SELECT EXISTS(SELECT 1 FROM transaction_bookmark WHERE transaction_id = :transactionId)")
     fun isBookmarked(transactionId: String): Flow<Boolean>

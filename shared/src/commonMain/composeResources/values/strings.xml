@@ -69,6 +69,11 @@
     <string name="unavailable_title">Belum Tersedia</string>
     <string name="unavailable_body">Fitur ini belum tersedia pada versi ini, pantau terus versi terbaru aplikasi nya!</string>
 
+    <!--  Gallery Permission Dialog  -->
+    <string name="gallery_permission_title">Izin Diperlukan</string>
+    <string name="gallery_permission_body">Kami memerlukan izin untuk menyimpan gambar ke galeri Anda.</string>
+    <string name="gallery_permission_button">Berikan izin</string>
+
     <!--  Error message  -->
     <string name="error_general">Terjadi kesalahan sistem</string>
     <string name="error_database">Gagal melakukan perubahan data</string>

@@ -25,6 +25,7 @@ koinAndroid = "4.2.0"
 datastorePreferences = "1.2.1"
 coil = "3.5.0"
 peekabooImagePicker = "0.5.2"
+coreSplashscreen = "1.2.0"
 
 [libraries]
 androidx-core-ktx-v1120 = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
@@ -57,6 +58,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 onseok-peekaboo-image-picker = { module = "io.github.onseok:peekaboo-image-picker", version.ref = "peekabooImagePicker" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

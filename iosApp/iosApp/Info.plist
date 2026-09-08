@@ -2,9 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>LauncherLogo</string>
+		<key>UIColorName</key>
+		<string>LauncherBackground</string>
+	</dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-    <false/>
+	<false/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Kami memerlukan izin untuk menyimpan gambar ke galeri Anda.</string>
 </dict>
 </plist>

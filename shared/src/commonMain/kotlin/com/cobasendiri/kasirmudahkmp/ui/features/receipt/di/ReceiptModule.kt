@@ -28,6 +28,7 @@ val receiptModule = module {
             updateTransactionBookmarkUseCase = get(),
             deleteTransactionHistoryUseCase = get(),
             saveReceiptImageUseCase = get(),
+            openAppSettingUseCase = get(),
             onNavigateBack = onNavigateBack,
         )
     }

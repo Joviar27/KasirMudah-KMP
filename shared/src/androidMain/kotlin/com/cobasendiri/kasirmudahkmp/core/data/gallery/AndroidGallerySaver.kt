@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class AndroidGallerySaver(
-    private val context: Context
+    context: Context
 ): GallerySaver {
 
     private val appContext = context.applicationContext
@@ -21,9 +21,9 @@ class AndroidGallerySaver(
     override suspend fun saveImageToGallery(
         imageBitmap: ImageBitmap,
         fileName: String
-    ): Boolean = withContext(Dispatchers.IO) {
+    ): Pair<Boolean,String?> = withContext(Dispatchers.IO) {
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return@withContext false
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return@withContext Pair(false, null)
 
         val contentResolver = appContext.contentResolver
         val imageName = "kasirmudah_${fileName}_${System.currentTimeMillis()}.png"
@@ -38,7 +38,7 @@ class AndroidGallerySaver(
         val imageUri = contentResolver.insert(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             contentValues
-        ) ?: return@withContext false
+        ) ?: return@withContext Pair(false, null)
 
         return@withContext try {
             contentResolver.openOutputStream(imageUri)?.use { stream ->
@@ -53,11 +53,11 @@ class AndroidGallerySaver(
             }
             contentResolver.update(imageUri, updateValues, null, null)
 
-            true
+            Pair(true, null)
         } catch (e: Exception) {
             e.printStackTrace()
             contentResolver.delete(imageUri, null, null)
-            false
+            Pair(false, e.message.toString())
         }
     }
 }

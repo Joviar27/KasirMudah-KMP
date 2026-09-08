@@ -9,63 +9,49 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import org.jetbrains.skia.EncodedImageFormat
 import org.jetbrains.skia.Image
 import platform.Foundation.NSData
-import platform.Foundation.NSOrderedSet
-import platform.Foundation.NSPredicate
 import platform.Foundation.dataWithBytes
-import platform.Foundation.orderedSetWithObject
-import platform.Photos.PHAssetChangeRequest
-import platform.Photos.PHAssetCollection
-import platform.Photos.PHAssetCollectionChangeRequest
-import platform.Photos.PHAssetCollectionSubtypeAny
-import platform.Photos.PHAssetCollectionTypeAlbum
-import platform.Photos.PHFetchOptions
+import platform.Photos.PHAccessLevelAddOnly
+import platform.Photos.PHAuthorizationStatusAuthorized
+import platform.Photos.PHAuthorizationStatusDenied
+import platform.Photos.PHAuthorizationStatusLimited
+import platform.Photos.PHAuthorizationStatusNotDetermined
+import platform.Photos.PHAuthorizationStatusRestricted
 import platform.Photos.PHPhotoLibrary
 import platform.UIKit.UIImage
 import kotlin.coroutines.resume
 
-class IOSGallerySaver: GallerySaver {
+class IOSGallerySaver(
+    private val nativeSaver: IOSNativeImageSaver
+): GallerySaver {
+    @OptIn(ExperimentalForeignApi::class)
     override suspend fun saveImageToGallery(
         imageBitmap: ImageBitmap,
         fileName: String
-    ): Boolean = suspendCancellableCoroutine{ continuation ->
+    ): Pair<Boolean,String?> = suspendCancellableCoroutine{ continuation ->
         val skiaBitmap = imageBitmap.asSkiaBitmap()
         val skiaImage = Image.makeFromBitmap(skiaBitmap)
         val data = skiaImage.encodeToData(EncodedImageFormat.PNG)
-            ?: return@suspendCancellableCoroutine continuation.resume(false)
+            ?: return@suspendCancellableCoroutine continuation.resume(Pair(false, null))
 
         val nsData = data.bytes.toNSData()
         val image = UIImage(data = nsData)
 
-        val albumName = "KasirMudah"
-        PHPhotoLibrary.sharedPhotoLibrary().performChanges({
-            val fetchOptions = PHFetchOptions()
-            fetchOptions.predicate = NSPredicate.predicateWithFormat("title = %@", albumName)
-            val collections = PHAssetCollection.fetchAssetCollectionsWithType(
-                PHAssetCollectionTypeAlbum,
-                PHAssetCollectionSubtypeAny,
-                fetchOptions
-            )
-
-            val albumChangeRequest = if (collections.count > 0UL) {
-                val existingAlbum = collections.firstObject as PHAssetCollection
-                PHAssetCollectionChangeRequest.changeRequestForAssetCollection(existingAlbum)
-            } else {
-                PHAssetCollectionChangeRequest.creationRequestForAssetCollectionWithTitle(albumName)
+        PHPhotoLibrary.requestAuthorizationForAccessLevel(PHAccessLevelAddOnly) { status ->
+            when(status){
+                PHAuthorizationStatusAuthorized, PHAuthorizationStatusLimited, PHAuthorizationStatusNotDetermined ->{
+                    nativeSaver.save(image){ isSuccess, error ->
+                        if (isSuccess) {
+                            continuation.resume(Pair(true, null))
+                        } else {
+                            continuation.resume(Pair(false, error?.localizedDescription))
+                        }
+                    }
+                }
+                PHAuthorizationStatusDenied, PHAuthorizationStatusRestricted ->{
+                    continuation.resume(Pair(false, "PERMISSION_DENIED"))
+                }
             }
-
-            val assetChangeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-            val assetPlaceholder = assetChangeRequest.placeholderForCreatedAsset
-
-            if (assetPlaceholder != null) {
-                val assetsSet = NSOrderedSet.orderedSetWithObject(assetPlaceholder)
-                albumChangeRequest?.addAssets(assetsSet)
-            }
-        }, completionHandler = { success, error ->
-            if (!success) {
-                println("Error saving image: ${error?.localizedDescription}")
-            }
-            continuation.resume(success)
-        })
+        }
     }
 
     @OptIn(ExperimentalForeignApi::class)

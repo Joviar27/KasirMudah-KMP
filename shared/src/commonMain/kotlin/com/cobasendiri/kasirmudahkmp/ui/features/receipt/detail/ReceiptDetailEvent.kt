@@ -14,4 +14,8 @@ interface ReceiptDetailEvent {
         val receiptBitmap: ImageBitmap,
         val fileName: String
     ): ReceiptDetailEvent
+
+    data object OnDismissGalleryPermissionDialog: ReceiptDetailEvent
+
+    data object OnOpenAppSetting: ReceiptDetailEvent
 }

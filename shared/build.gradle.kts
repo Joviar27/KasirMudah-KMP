@@ -52,6 +52,8 @@ kotlin {
             implementation(libs.compose.uiTooling)
             implementation(libs.androidx.core.ktx.v1120)
             api(libs.koin.android)
+            //Splashscreen
+            api(libs.androidx.core.splashscreen)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
