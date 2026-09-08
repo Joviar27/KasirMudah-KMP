@@ -6,5 +6,8 @@
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
+
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Kami memerlukan izin untuk menyimpan gambar ke galeri Anda.</string>
 </dict>
 </plist>
