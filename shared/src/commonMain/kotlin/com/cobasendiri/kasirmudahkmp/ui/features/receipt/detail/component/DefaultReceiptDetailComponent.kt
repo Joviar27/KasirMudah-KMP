@@ -7,9 +7,11 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
+import com.cobasendiri.kasirmudahkmp.core.domain.exception.KasirMudahException
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.DeleteTransactionHistoryUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetIsTransactionBookmarkedUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetTransactionUseCase
+import com.cobasendiri.kasirmudahkmp.core.domain.usecase.OpenAppSettingUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.SaveReceiptImageUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.UpdateTransactionBookmarkUseCase
 import com.cobasendiri.kasirmudahkmp.ui.features.base.BaseComponent
@@ -27,6 +29,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.collections.copy
+import kotlin.invoke
 import kotlin.time.Duration.Companion.milliseconds
 
 class DefaultReceiptDetailComponent(
@@ -37,6 +41,7 @@ class DefaultReceiptDetailComponent(
     private val updateTransactionBookmarkUseCase: UpdateTransactionBookmarkUseCase,
     private val deleteTransactionHistoryUseCase: DeleteTransactionHistoryUseCase,
     private val saveReceiptImageUseCase: SaveReceiptImageUseCase,
+    private val openAppSettingUseCase: OpenAppSettingUseCase,
     private val onNavigateBack: () -> Unit
 ): BaseComponent(), ReceiptDetailComponent, ComponentContext by componentContext{
 
@@ -112,14 +117,18 @@ class DefaultReceiptDetailComponent(
         scope.launch {
             _state.update { it.copy(processing = true) }
 
-            saveReceiptImageUseCase.invoke(imageBitmap, filename).handleResult { successSaveReceipt ->
-                val uiMessage = if(successSaveReceipt){
-                    Res.string.success_save_receipt.asUiMessage(UiMessageType.SUCCESS)
-                }else{
-                    Res.string.error_save_receipt.asUiMessage(UiMessageType.ERROR)
+            saveReceiptImageUseCase.invoke(imageBitmap, filename).handleResult(
+                onFailed = { error ->
+                    if(error is KasirMudahException.GalleryPermissionError){
+                        showGalleryPermissionDialog()
+                    }else{
+                        showUiMessage(Res.string.error_save_receipt.asUiMessage(UiMessageType.ERROR))
+                    }
+                },
+                onSuccess = {
+                    showUiMessage(Res.string.success_save_receipt.asUiMessage(UiMessageType.SUCCESS))
                 }
-                showUiMessage(uiMessage)
-            }
+            )
 
             //Avoid multiple download
             delay(500.milliseconds)
@@ -127,6 +136,22 @@ class DefaultReceiptDetailComponent(
                 it.copy(processing = false)
             }
         }
+    }
+
+    override fun showGalleryPermissionDialog() {
+        _state.update {
+            it.copy(showGalleryPermissionDialog = true)
+        }
+    }
+
+    override fun dismissGalleryPermissionDialog() {
+        _state.update {
+            it.copy(showGalleryPermissionDialog = false)
+        }
+    }
+
+    override fun openAppSetting() {
+        openAppSettingUseCase.invoke()
     }
 
     override fun onNavigateBack() {

@@ -16,6 +16,7 @@ import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetTotalCartAmountUseCa
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetTransactionHistoryUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.GetTransactionUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.IncrementProductUseCase
+import com.cobasendiri.kasirmudahkmp.core.domain.usecase.OpenAppSettingUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.SaveReceiptImageUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.UpdateProductColorCodeUseCase
 import com.cobasendiri.kasirmudahkmp.core.domain.usecase.UpdateProductUseCase
@@ -62,6 +63,8 @@ val useCaseModule = module {
     factory { GetReceiptItemsUseCase(get()) }
 
     factory { SaveReceiptImageUseCase(get()) }
+
+    factory { OpenAppSettingUseCase(get()) }
 
     factory { AddTransactionUseCase(get(), get(), get()) }
 

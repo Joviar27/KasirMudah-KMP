@@ -14,6 +14,9 @@ sealed class KasirMudahException() : Exception() {
         private fun readResolve(): Any = DatabaseError
     }
 
+    data object GalleryPermissionError : KasirMudahException(){
+        private fun readResolve(): Any = GalleryPermissionError
+    }
     data class UnknownError(val originalMessage: String?) : KasirMudahException()
 
 }

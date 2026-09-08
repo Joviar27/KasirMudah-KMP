@@ -17,6 +17,9 @@ interface ReceiptDetailComponent: BaseComponentInterface {
     fun showConfirmDeleteDialog(transactionId: String)
     fun dismissConfirmDeleteDialog()
     fun downloadReceipt(imageBitmap: ImageBitmap, filename: String)
+    fun showGalleryPermissionDialog()
+    fun dismissGalleryPermissionDialog()
+    fun openAppSetting()
     fun onNavigateBack()
 
     data class ReceiptDetailState(
@@ -29,6 +32,7 @@ interface ReceiptDetailComponent: BaseComponentInterface {
         val isBookmarked: Boolean = false,
         val uiMessage: UiMessage? = null,
         val showConfirmDeleteDialog: String? = null,
+        val showGalleryPermissionDialog: Boolean = false,
         val processing: Boolean = true
     )
 }

@@ -41,6 +41,7 @@ import com.cobasendiri.kasirmudahkmp.ui.features.receipt.view.ReceiptItem
 import com.cobasendiri.kasirmudahkmp.ui.utils.FormatUtil.decimalFormat
 import com.cobasendiri.kasirmudahkmp.ui.utils.dateFormat
 import com.cobasendiri.kasirmudahkmp.ui.view.button.RoundedPrimaryButton
+import com.cobasendiri.kasirmudahkmp.ui.view.dialog.InformationConfirmDialog
 import com.cobasendiri.kasirmudahkmp.ui.view.dialog.NegativeConfirmDialog
 import kasirmudah_kmp.shared.generated.resources.Res
 import kasirmudah_kmp.shared.generated.resources.cancel
@@ -48,6 +49,9 @@ import kasirmudah_kmp.shared.generated.resources.delete
 import kasirmudah_kmp.shared.generated.resources.delete_transaction_body
 import kasirmudah_kmp.shared.generated.resources.delete_transaction_title
 import kasirmudah_kmp.shared.generated.resources.download_receipt
+import kasirmudah_kmp.shared.generated.resources.gallery_permission_body
+import kasirmudah_kmp.shared.generated.resources.gallery_permission_button
+import kasirmudah_kmp.shared.generated.resources.gallery_permission_title
 import kasirmudah_kmp.shared.generated.resources.ic_kasirmudah
 import kasirmudah_kmp.shared.generated.resources.item_name
 import kasirmudah_kmp.shared.generated.resources.price
@@ -188,6 +192,19 @@ fun ReceiptDetailContent(
                 onCancel = { event.invoke(dismissEvent) },
                 onConfirm = {
                     event.invoke(ReceiptDetailEvent.OnDelete(transactionId))
+                }
+            )
+        }
+        if(state.showGalleryPermissionDialog){
+            InformationConfirmDialog(
+                title = stringResource(Res.string.gallery_permission_title),
+                body = stringResource(Res.string.gallery_permission_body),
+                confirmButton = stringResource(Res.string.gallery_permission_button),
+                onDismiss = {
+                    event.invoke(ReceiptDetailEvent.OnDismissConfirmDeleteDialog)
+                },
+                onConfirm = {
+                    event.invoke(ReceiptDetailEvent.OnOpenAppSetting)
                 }
             )
         }
