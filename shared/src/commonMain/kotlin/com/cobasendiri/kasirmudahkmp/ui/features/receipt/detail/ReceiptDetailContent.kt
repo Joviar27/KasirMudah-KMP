@@ -201,7 +201,7 @@ fun ReceiptDetailContent(
                 body = stringResource(Res.string.gallery_permission_body),
                 confirmButton = stringResource(Res.string.gallery_permission_button),
                 onDismiss = {
-                    event.invoke(ReceiptDetailEvent.OnDismissConfirmDeleteDialog)
+                    event.invoke(ReceiptDetailEvent.OnDismissGalleryPermissionDialog)
                 },
                 onConfirm = {
                     event.invoke(ReceiptDetailEvent.OnOpenAppSetting)
