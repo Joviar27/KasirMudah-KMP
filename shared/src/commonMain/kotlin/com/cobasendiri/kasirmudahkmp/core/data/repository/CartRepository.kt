@@ -20,9 +20,14 @@ class CartRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ICartRepository {
 
+    companion object{
+        private const val LOGGER_TAG = "CartRepository"
+    }
+
     override fun getAllCartProduct(searchQuery: String): Flow<List<ProductInfo>?>{
+        val log = Pair(LOGGER_TAG, "getAllCartProduct")
         return cartDao.getAllCartProducts()
-            .mapExceptionFlow{ products ->
+            .mapExceptionFlow(log){ products ->
                 val filtered = if(searchQuery.isNotEmpty()){
                     products.filter { it.productEntity.name.contains(searchQuery, true) }
                 }else {
@@ -33,14 +38,16 @@ class CartRepository(
     }
 
     override fun getTotalCartAmount(): Flow<Long?>{
-        return cartDao.getTotalCartAmount().mapExceptionFlow()
+        val log = Pair(LOGGER_TAG, "getTotalCartAmount")
+        return cartDao.getTotalCartAmount().mapExceptionFlow(log)
             .flowOn(ioDispatcher)
     }
 
     override suspend fun addOrIncrementProduct(
         productId: String
     ) = withContext(ioDispatcher) {
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "addOrIncrementProduct")
+        runMapExceptionSuspending(log) {
             cartDao.addOrIncrementProduct(productId)
         }
     }
@@ -48,21 +55,24 @@ class CartRepository(
     override suspend fun decrementProduct(
         productId: String
     ) = withContext(ioDispatcher) {
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "decrementProduct")
+        runMapExceptionSuspending(log) {
             cartDao.decrementOrRemoveProduct(productId)
         }
     }
 
     override suspend fun clearCart() =
         withContext(ioDispatcher) {
-            runMapExceptionSuspending {
+            val log = Pair(LOGGER_TAG, "clearCart")
+            runMapExceptionSuspending(log) {
                 cartDao.deleteAllCart()
             }
         }
 
     override suspend fun getProductsTotal(): List<TransactionItemInfo> {
         return withContext(ioDispatcher) {
-            runMapExceptionSuspending {
+            val log = Pair(LOGGER_TAG, "getProductsTotal")
+            runMapExceptionSuspending(log) {
                 cartDao.getProductsTotalAmount().mapToDomain()
             }
         }
