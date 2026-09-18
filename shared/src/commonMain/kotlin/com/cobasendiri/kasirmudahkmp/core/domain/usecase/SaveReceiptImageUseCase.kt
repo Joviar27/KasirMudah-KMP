@@ -26,7 +26,7 @@ class SaveReceiptImageUseCase(
                     throw KasirMudahException.GalleryPermissionError
                 }
                 else -> {
-                    logWarning("Failed to save image to gallery")
+                    logWarning("Failed to save image to gallery: ${result.second}")
                     throw KasirMudahException.UnknownError(null)
                 }
             }
