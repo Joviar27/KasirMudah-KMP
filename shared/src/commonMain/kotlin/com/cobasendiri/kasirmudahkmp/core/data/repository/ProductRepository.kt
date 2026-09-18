@@ -21,9 +21,14 @@ class ProductRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): IProductRepository {
 
+    companion object{
+        private const val LOGGER_TAG = "ProductRepository"
+    }
+
     override fun getAllProducts(searchQuery: String): Flow<List<ProductInfo>?> {
+        val log = Pair(LOGGER_TAG, "getAllProducts")
         return productDao.getAllProducts()
-            .mapExceptionFlow { products ->
+            .mapExceptionFlow(log) { products ->
                 val filtered = if(searchQuery.isNotEmpty()){
                     products.filter { it.productEntity.name.contains(searchQuery, true) }
                 }else {
@@ -38,7 +43,8 @@ class ProductRepository(
     override suspend fun addNewProduct(
         newProduct: ProductDraft
     ) = withContext(ioDispatcher){
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "addNewProduct")
+        runMapExceptionSuspending(log) {
             productDao.addProduct(
                 newProduct.copy(
                     id = IdGenerator.generateProductId()
@@ -50,7 +56,8 @@ class ProductRepository(
     override suspend fun updateProduct(
         productDraft: ProductDraft
     ) = withContext(ioDispatcher){
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "updateProduct")
+        runMapExceptionSuspending(log) {
             productDao.updateProduct(productDraft.mapToEntity())
         }
     }
@@ -59,7 +66,8 @@ class ProductRepository(
         productId: String,
         newColor: Long
     ) = withContext(ioDispatcher) {
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "updateProductColorCode")
+        runMapExceptionSuspending(log) {
             productDao.updateProductColorCode(productId, newColor)
         }
     }
@@ -67,7 +75,8 @@ class ProductRepository(
     override suspend fun deleteProduct(
         productId: String
     ) = withContext(ioDispatcher) {
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "deleteProduct")
+        runMapExceptionSuspending(log) {
             productDao.deleteProduct(productId)
         }
     }

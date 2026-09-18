@@ -8,6 +8,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -16,6 +17,10 @@ class AndroidGallerySaver(
     context: Context
 ): GallerySaver {
 
+    companion object{
+        private const val LOGGER_TAG = "ANDROID_GALLERY_SAVER"
+    }
+
     private val appContext = context.applicationContext
 
     override suspend fun saveImageToGallery(
@@ -23,7 +28,9 @@ class AndroidGallerySaver(
         fileName: String
     ): Pair<Boolean,String?> = withContext(Dispatchers.IO) {
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return@withContext Pair(false, null)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            return@withContext Pair(false, "Android version ${Build.VERSION.SDK_INT} not supported")
+        }
 
         val contentResolver = appContext.contentResolver
         val imageName = "kasirmudah_${fileName}_${System.currentTimeMillis()}.png"
@@ -38,7 +45,7 @@ class AndroidGallerySaver(
         val imageUri = contentResolver.insert(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             contentValues
-        ) ?: return@withContext Pair(false, null)
+        ) ?: return@withContext Pair(false, "Content resolver failed to generate image uri")
 
         return@withContext try {
             contentResolver.openOutputStream(imageUri)?.use { stream ->
@@ -55,6 +62,7 @@ class AndroidGallerySaver(
 
             Pair(true, null)
         } catch (e: Exception) {
+            Logger.withTag(LOGGER_TAG).e { "saveImageToGallery: ${e.message}" }
             e.printStackTrace()
             contentResolver.delete(imageUri, null, null)
             Pair(false, e.message.toString())

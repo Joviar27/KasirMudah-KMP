@@ -91,6 +91,9 @@ kotlin {
 
             //Date-Time
             implementation(libs.kotlinx.datetime)
+
+            //Logging
+            api(libs.touchlab.kermit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -20,8 +20,13 @@ class ProfileRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): IProfileRepository {
 
+    companion object{
+        private const val LOGGER_TAG = "ProfileRepository"
+    }
+
     override fun getShopProfile(): Flow<ShopProfile> {
-         return combine(
+        val log = Pair(LOGGER_TAG, "getShopProfile")
+        return combine(
              profilePreferenceManager.shopNameFlow,
              profilePreferenceManager.shopImageFlow
          ){ shopName, shopImage ->
@@ -31,14 +36,15 @@ class ProfileRepository(
                      ImageWrapper(Base64.decode(it))
                  }
              )
-         }.mapExceptionFlow().flowOn(ioDispatcher)
+         }.mapExceptionFlow(log).flowOn(ioDispatcher)
     }
 
     override suspend fun saveShopProfile(
         shopName: String,
         shopImage: ImageWrapper?
     ) = withContext(ioDispatcher){
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "saveShopProfile")
+        runMapExceptionSuspending(log) {
             val shopImageBytes = shopImage?.bytes ?: byteArrayOf()
             profilePreferenceManager.saveShopProfile(
                 shopName,

@@ -25,12 +25,17 @@ class TransactionRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ITransactionRepository {
 
+    companion object{
+        private const val LOGGER_TAG = "TransactionRepository"
+    }
+
     override suspend fun insertNewTransaction(
         draftItems: List<TransactionItemInfo>,
         draftTotal: Long,
         shopName: String
     ) = withContext(ioDispatcher){
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "insertNewTransaction")
+        runMapExceptionSuspending(log) {
             val id = IdGenerator.generateTransactionId()
             val name = "Transaksi ${id.takeLast(10)}${id.take(10)}"
             val items = draftItems.map {
@@ -57,39 +62,45 @@ class TransactionRepository(
     override suspend fun deleteTransaction(
         transactionId: String
     ) = withContext(ioDispatcher) {
-        runMapExceptionSuspending {
+        val log = Pair(LOGGER_TAG, "deleteTransaction")
+        runMapExceptionSuspending(log) {
             transactionDao.deleteTransaction(transactionId)
         }
     }
 
     override fun getTransactionHistory(timestampFilter: Long): Flow<List<TransactionHistory>?> {
-        return transactionDao.getTransactionHistory(timestampFilter).mapExceptionFlow {
+        val log = Pair(LOGGER_TAG, "getTransactionHistory")
+        return transactionDao.getTransactionHistory(timestampFilter).mapExceptionFlow(log) {
             it.mapTransactionHistoryToDomain()
         }.flowOn(ioDispatcher)
     }
 
     override suspend fun getTransaction(transactionId: String): TransactionReceipt {
+        val log = Pair(LOGGER_TAG, "getTransaction")
         return withContext(ioDispatcher) {
-            runMapExceptionSuspending {
+            runMapExceptionSuspending(log) {
                 transactionDao.getTransaction(transactionId).mapToTransactionReceipt()
             }
         }
     }
 
     override fun getBookmarkedTransaction(): Flow<List<TransactionHistory>?> {
-        return transactionDao.getBookmarkedTransaction().mapExceptionFlow{
+        val log = Pair(LOGGER_TAG, "getBookmarkedTransaction")
+        return transactionDao.getBookmarkedTransaction().mapExceptionFlow(log){
             it.mapTransactionHistoryToDomain()
         }.flowOn(ioDispatcher)
     }
 
     override fun getIsBookmarked(transactionId: String): Flow<Boolean> {
+        val log = Pair(LOGGER_TAG, "getIsBookmarked")
         return transactionDao.isBookmarked(transactionId)
-            .mapExceptionFlow().flowOn(ioDispatcher)
+            .mapExceptionFlow(log).flowOn(ioDispatcher)
     }
 
     override suspend fun updateBookmark(transactionId: String): Boolean {
+        val log = Pair(LOGGER_TAG, "updateBookmark")
         return withContext(ioDispatcher){
-            runMapExceptionSuspending {
+            runMapExceptionSuspending(log) {
                 transactionDao.updateBookmark(
                     transactionId,
                     Clock.System.now().toEpochMilliseconds()/1000
@@ -99,8 +110,9 @@ class TransactionRepository(
     }
 
     override suspend fun updateName(transactionId: String, newName: String) {
+        val log = Pair(LOGGER_TAG, "updateName")
         return withContext(ioDispatcher) {
-            runMapExceptionSuspending {
+            runMapExceptionSuspending(log) {
                 transactionDao.updateName(transactionId, newName)
             }
         }
