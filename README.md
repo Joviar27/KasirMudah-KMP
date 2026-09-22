@@ -1,31 +1,60 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# KasirMudah: Lightweight Transaction Bookkeeping Application
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Project Overview
+KasirMudah is a lightweight bookkeeping application designed to digitize transaction management for small and medium-sized enterprises (SMEs). The application replaces manual paper-based ledger systems with a digital alternative, maintaining low system resource requirements for smooth performance on entry-level mobile devices.
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
-
-### Running the apps
-
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
-
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
-
-### Running tests
-
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
-
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
+This project is migrated from an existing native Android application, available in the original [KasirMudah Github Repository](https://github.com/Joviar27/KasirMudah).  
+The user interface design specifications and wireframes for this version are documented in the [KasirMudah Figma Design File](https://www.figma.com/design/2ioaVuM4Kc1UJIsHvRxzOE/KasirMudah?node-id=0-1&t=aDCbHEFhY0hUqadr-1).
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Technical Stack
+* **Kotlin Multiplatform (KMP) & Jetpack Compose Multiplatform:** Cross-platform development framework and declarative UI toolkit used to compile a shared codebase for Android and iOS.
+* **Decompose:** A component-based architecture and navigation library for KMP that uses a tree-based component structure to isolate navigation, state management, and business logic from UI rendering.
+* **Koin:** A dependency injection framework for Kotlin Multiplatform that uses a Domain Specific Language (DSL) to assemble application modules and manage dependencies seamlessly across layers.
+* **Room KMP (Relational Database):** An abstraction layer over SQLite adapted for KMP, providing structured local persistence and relational data management across mobile platforms.
+* **Jetpack DataStore Preferences:** A key-value storage solution used to persist lightweight user settings and configuration data asynchronously.
+* **Coil 3 for KMP:** An image-loading library optimized for Kotlin Coroutines, used to fetch, cache, and render local and remote images.
+* **Peekaboo:** A Kotlin Multiplatform library providing cross-platform image picking capabilities.
+
+---
+
+## System Architecture
+The application implements **Clean Architecture** principles to enforce separation of concerns across three distinct layers:
+
+* **Data Layer:** Handles data persistence and local storage abstractions, wrapping the Room database implementation.
+* **Domain Layer:** Contains pure Kotlin core business rules, entity models, and input validation logic, independent of external frameworks.
+* **Presentation Layer:** Manages user interface components, Decompose navigation nodes, rendering logic, and UI state synchronization.
+
+---
+
+## Functional Features
+
+### Product Catalog Management
+* **Product Registration:** Allows users to create new inventory entries with designated names and price values.
+* **Item Removal:** Enables deletion of outdated or discontinued items from the store catalog.
+* **Color Categorization:** Provides visual tags to group products or highlight specific categories.
+* **Catalog Search:** Includes a search input field to query and filter catalog items by name.
+
+![Product Catalog Feature Screenshot](https://github.com/user-attachments/assets/1a40bea1-0c9b-4465-a2b4-38d8f06663cf)
+
+### Cart Operations
+* **Cart Controls:** Supports item addition, quantity adjustments via increment/decrement actions, and one-tap cart resetting.
+* **Receipt Generation & Confirmation:** Validates active cart items, generates a transactional receipt preview, and commits the transaction to local storage upon confirmation.
+
+![Cart Operations Feature Screenshot](https://github.com/user-attachments/assets/2770e694-d9bb-410f-9aff-4a1a3c49ea19)
+
+### Transaction History & Records
+* **Transaction Ledger:** Displays an ordered history of completed sales, sorted chronologically with the most recent items first.
+* **Range Filtering:** Allows users to filter transactions generated within certain time intervals.
+* **Record Management:** Supports renaming transaction titles, deleting records, and bookmarking key transactions for quick access.
+* **Receipt Export:** Enables exporting transaction receipts as images directly to the device photo library for archival or sharing purposes.
+
+![Transaction Feature Screenshot](https://github.com/user-attachments/assets/170d6e07-662b-4af6-b07a-7ba39876e56e)
+![Receipt Feature Screenshot](https://github.com/user-attachments/assets/33c84be4-8f01-4d14-8ab4-b40e9684f4c3)
+
+### Store Profile Customization
+* **Profile Configuration:** Allows users to modify the store name and upload or update the business profile image.
+* **Receipt Personalization:** Dynamically applies the configured store name when generating new transaction receipts.
+
+![Profile Feature Screenshot](https://github.com/user-attachments/assets/ae7d7ea6-7ccd-4c6a-8efc-db05d79248a8)
